@@ -1,6 +1,6 @@
 import { ApiCall } from "tsrpc";
 import { ReqSend, ResSend } from "../../shared/protocols/game/PtlSend";
-import { game } from "../..";
+import { game,room } from "../..";
 export default async function (call: ApiCall<ReqSend, ResSend>) {
     let content:string = call.req.content;
       if(!content){

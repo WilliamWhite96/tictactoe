@@ -1,4 +1,3 @@
-import { promises } from "fs";
 import { GameUserParams,GameChessboardParams } from "../shared/model/RoomModel";
 import { roomKey } from "../util/KeysUtil";
 import { BaseEntity } from "./BaseEntity";

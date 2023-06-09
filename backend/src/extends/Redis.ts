@@ -27,16 +27,22 @@ export class Redis{
         this.client = client;
     }
 
-    async setKey(key:string, value:string){
-        await this.client.set(key, value);
+    async setKey(key:string, value:string,expire:number=0){
+        this.client.set(key, value);
+        if(expire){
+            this.expire(key,expire);
+        }
     }
     
     async getKey(key:string){
         let value = await this.client.get(key);
         return value;
     };
-    async zAdd(key:string,value:string,score:number){
-        return await this.client.zAdd(key,[{score,value}]);
+    async zAdd(key:string,value:string,score:number,expire:number=0){
+        this.client.zAdd(key,[{score,value}])
+        if(expire){
+            this.expire(key,expire);
+        }
     }
     async zRangeWithScores(key:string,start:number,end:number){
         return await this.client.zRangeWithScores(key, start,end);
@@ -44,11 +50,22 @@ export class Redis{
     async zRem(key:string,value:string[]){
         return await this.client.zRem(key,value);
     }
-    async hSet(key:string,values:any){
-        return await this.client.hSet(key,values);
+    async hSet(key:string,values:any,expire:number=0){
+        this.client.hSet(key,values)
+        if(expire){
+            this.expire(key,expire);
+        }        
     }
     async hGetAll(key:string){
         let values = await this.client.hGetAll(key);
         return values;
     }   
+    async expire(key:string,expire:number){
+        let values = await this.client.expire(key,expire);
+        return values;
+    } 
+    async del(key:string){
+        let values = await this.client.del(key);
+        return values;
+    } 
 }

@@ -36,9 +36,11 @@ export class Room {
     }
     async create(userId: number,conn: WsConnection): Promise<number>{
         let roomId:number = Date.parse(new Date().toString()); 
+        let closeTime:number = Date.parse(new Date().toString())/1000+this.closeTime;
         //将用户加入连接池
         this.roomConnections.push({
             roomId: roomId,
+            closeTime: closeTime,
             connection: [conn]
         });
         //创建房间
@@ -57,10 +59,9 @@ export class Room {
     }
     async join(roomId: number,userId: number,conn: WsConnection){
         //将用户加入连接池
-        this.roomConnections.push({
-            roomId: roomId,
-            connection: [conn]
-        });
+        let roomConnection:RoomConnectionParams = this.roomConnections.find((v)=>v.roomId==roomId) as RoomConnectionParams;
+        roomConnection.connection.push(conn);
+        //获取房间
         let r:RoomEntity = await this.info(roomId);
         //加入用户
         r.users.push({

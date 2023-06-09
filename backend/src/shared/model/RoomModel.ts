@@ -16,6 +16,7 @@ export interface GameChessboardParams {
 
 export interface RoomConnectionParams {
     roomId: number,              //房间号
+    closeTime: number,           //房间自毁时间
     connection: WsConnection[],  //连接池
 }
 
